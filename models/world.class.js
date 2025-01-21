@@ -1,22 +1,10 @@
 class World {
     character = new Character();
-    enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-    ];
-    clouds = [
-        new Cloud()
-    ];
-    landscape = [
-        new Landscape('img/5_background/layers/air.png', 0),
-        new Landscape('img/5_background/layers/3_third_layer/1.png', 0),
-        new Landscape('img/5_background/layers/2_second_layer/1.png', 0),
-        new Landscape('img/5_background/layers/1_first_layer/1.png', 0)
-    ];
+    level = level1;
     canvas;
     ctx;
     keyboard;
+    camera_x = 0;
 
 
     constructor(canvas, keyboard) {
@@ -36,10 +24,16 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.addObjectsToMap(this.landscape);
-        this.addObjectsToMap(this.clouds);
-        this.addObjectsToMap(this.enemies);
+        this.ctx.translate(this.camera_x, 0);
+
+        this.addObjectsToMap(this.level.landscape);
+
         this.addToMap(this.character);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.enemies);
+
+        this.ctx.translate(-this.camera_x, 0);
+        
 
 
         // draw() wird immer wieder aufgerufen
