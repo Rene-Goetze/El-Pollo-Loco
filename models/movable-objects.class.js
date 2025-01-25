@@ -27,6 +27,20 @@ class MovableObject {
             });
         }
 
+        playAnimation(images) {
+            if (!images || images.length === 0) {  // Falls `images` leer oder `undefined` ist, Fehler vermeiden
+                console.error("playAnimation wurde mit einem leeren oder undefinierten Array aufgerufen!");
+                return;
+            }
+        
+            let i = this.currentImage % images.length; //  Nutze das übergebene `images`-Array
+            let path = images[i];  //  Nutze `images[i]` statt `this.images[i]`
+            
+            this.img = this.imageCache[path];  //  Holt das Bild aus dem Cache
+            this.currentImage++;
+        }
+        
+
         moveRight() {
             console.log('Moving right');
         }

@@ -7,6 +7,9 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ];
+
+    chicken_sound = new Audio('audio/chicken2.mp3');
+    lastSoundTime = 0; 
     
     constructor() {
         super();
@@ -20,12 +23,17 @@ class Chicken extends MovableObject {
 
     animate() {
         this.moveLeft();
+        let lastSoundTime = 0;
+        this.chicken_sound.volume = 0;
 
         setInterval( () => {
-            let i = this.currentImage % this.IMAGES_WALKING.length; // Zeile sorgt dafür, dass das Array wieder bei 0 beginnt.
-            let path = this.IMAGES_WALKING[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            let now = Date.now();
+            if (now - lastSoundTime > 10000) { // Sound nur alle 2 Sekunden
+                this.chicken_sound.play().catch(error => console.log(error)); // Falls der Browser blockiert, wird der Fehler geloggt
+                lastSoundTime = now;
+            }
+
+            this.playAnimation(this.IMAGES_WALKING);
         }, 420);
     }
 }
